@@ -41,6 +41,7 @@ class Email implements \SplObserver
         if ($emails) {
             rsort($emails); //Put new mail on top
             foreach ($emails as $id) {
+                imap_setflag_full($inbox, $id, '\\Seen');
                 $return[] = [
                     'title' => $this->getTitle($inbox, $id, 0),
                     'text' => $this->getText($inbox, $id, 2),
@@ -71,7 +72,7 @@ class Email implements \SplObserver
         $header = imap_headerinfo($inbox, $id, $offset);
 
         $title = iconv_mime_decode($header->subject);
-        $title.= ' from '.iconv_mime_decode($header->from[0]->personal);
+        # $title.= ' from '.iconv_mime_decode($header->from[0]->personal);
         $title.= ' ('.$header->from[0]->mailbox.'@'.$header->from[0]->host.')';
 
         return $title;

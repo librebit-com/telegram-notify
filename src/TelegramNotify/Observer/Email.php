@@ -39,7 +39,6 @@ class Email implements \SplObserver
         }
         $emails = imap_search($inbox, 'UNSEEN');
         if ($emails) {
-            rsort($emails); //Put new mail on top
             foreach ($emails as $id) {
                 imap_setflag_full($inbox, $id, '\\Seen');
                 $return[] = [
